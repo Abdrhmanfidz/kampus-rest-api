@@ -1,15 +1,11 @@
-FROM php:8.2-apache
-
-RUN apt-get update && \
-    a2dismod mpm_event || true && \
-    a2dismod mpm_worker || true && \
-    a2dismod mpm_prefork || true && \
-    a2enmod mpm_prefork
+FROM php:8.2-cli
 
 RUN docker-php-ext-install mysqli
 
 COPY . /var/www/html/
 
-RUN a2enmod rewrite
+WORKDIR /var/www/html
 
 EXPOSE 80
+
+CMD ["php", "-S", "0.0.0.0:80"]
