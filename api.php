@@ -3,7 +3,7 @@ header("Content-Type: application/json");
 
 // Koneksi database
 $conn = new mysqli(
-    $_ENV['shuttle.proxy.rlwy.net'],
+    $_ENV['mysql.railway.internal'],
     $_ENV['root'],
     $_ENV['XKLlgvtOxXNGQuYKQFohrfFsVJvjBevq'],
     $_ENV['railway'],
