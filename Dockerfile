@@ -1,12 +1,15 @@
 FROM php:8.2-apache
 
-# install mysqli
+# Fix MPM conflict
+RUN a2dismod mpm_event mpm_worker 2>/dev/null; a2enmod mpm_prefork
+
+# Install mysqli
 RUN docker-php-ext-install mysqli
 
-# copy project ke apache root
+# Copy project ke apache root
 COPY . /var/www/html/
 
-# aktifkan apache rewrite
+# Aktifkan apache rewrite
 RUN a2enmod rewrite
 
 EXPOSE 80
