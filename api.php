@@ -5,7 +5,7 @@ header("Content-Type: application/json");
 $conn = new mysqli(
     $_ENV['mysql.railway.internal'],
     $_ENV['root'],
-    $_ENV['XKLlgvtOxXNGQuYKQFohrfFsVJvjBevq'],
+    $_ENV['loNOJCiUQGrPegvEOpNpVUKtVioRRwMn'],
     $_ENV['railway'],
     (int)$_ENV['3306']
 );
