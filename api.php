@@ -3,11 +3,11 @@ header("Content-Type: application/json");
 
 // Koneksi database
 $conn = new mysqli(
-    $_ENV['mysql.railway.internal'],
-    $_ENV['root'],
-    $_ENV['loNOJCiUQGrPegvEOpNpVUKtVioRRwMn'],
-    $_ENV['railway'],
-    (int)$_ENV['3306']
+    $_ENV['MYSQLHOST'],
+    $_ENV['MYSQLUSER'],
+    $_ENV['MYSQLPASSWORD'],
+    $_ENV['MYSQLDATABASE'],
+    (int)$_ENV['MYSQLPORT']
 );
 
 if ($conn->connect_error) {
