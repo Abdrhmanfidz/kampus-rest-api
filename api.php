@@ -10,7 +10,6 @@ $conn = new mysqli(
     $_ENV['MYSQLDATABASE'],
     $_ENV['MYSQLPORT']
 );
-);
 
 if ($conn->connect_error) {
     die(json_encode([
