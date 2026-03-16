@@ -2,11 +2,11 @@
 header("Content-Type: application/json");
 
 $conn = new mysqli(
-    $_ENV['MYSQLHOST'],
-    $_ENV['MYSQLUSER'],
-    $_ENV['MYSQLPASSWORD'],
-    $_ENV['MYSQLDATABASE'],
-    (int)$_ENV['MYSQLPORT']   // ← wajib cast ke integer
+    $_ENV['mysql.railway.internal'],
+    $_ENV['root'],
+    $_ENV['XKLlgvtOxXNGQuYKQFohrfFsVJvjBevq'],
+    $_ENV['railway'],
+    (int)$_ENV['3306']   // ← wajib cast ke integer
 );
 
 if ($conn->connect_error) {
