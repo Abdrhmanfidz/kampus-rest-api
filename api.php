@@ -3,17 +3,13 @@ header("Content-Type: application/json");
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
-$conn = new mysqli();
-$conn->ssl_set(NULL, NULL, NULL, NULL, NULL);
-$conn->real_connect(
-    'shuttle.proxy.rlwy.net',
-    'root',
-    'loNOJCiUQGrPegvEOpNpVUKtVioRRwMn',
-    'railway',
-    35889,
-    NULL,
-    MYSQLI_CLIENT_SSL
-);
+$host = 'shuttle.proxy.rlwy.net';
+$user = 'root';
+$pass = 'loNOJCiUQGrPegvEOpNpVUKtVioRRwMn'; // ← ganti ini
+$db   = 'railway';
+$port = 35889;
+
+$conn = new mysqli($host, $user, $pass, $db, $port);
 
 if ($conn->connect_error) {
     die(json_encode([
@@ -23,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 echo json_encode([
-    "status" => "success",
+    "status" => "success", 
     "message" => "Koneksi berhasil!"
 ]);
 ?>
