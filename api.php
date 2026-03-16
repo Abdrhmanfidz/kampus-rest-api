@@ -3,11 +3,11 @@ header("Content-Type: application/json");
 
 // Koneksi database - hardcode sementara untuk test
 $conn = new mysqli(
-    'mysql.railway.internal',
+    'shuttle.proxy.rlwy.net',
     'root',
     'loNOJCiUQGrPegvEOpNpVUKtVioRRwMn',
     'railway',
-    3306
+    35889
 );
 
 if ($conn->connect_error) {
