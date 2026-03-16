@@ -4,9 +4,9 @@ header("Content-Type: application/json");
 
 // koneksi database
 $conn = new mysqli(
-$_ENV['MYSQLHOST'],
-$_ENV['MYSQLUSER'],
-$_ENV['MYSQLPASSWORD'],
+$_ENV['MYSQLHOST']
+$_ENV['MYSQLUSER']
+$_ENV['MYSQLPASSWORD']
 $_ENV['MYSQLDATABASE']
 );
 
