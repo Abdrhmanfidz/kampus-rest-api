@@ -1,13 +1,18 @@
 <?php
 header("Content-Type: application/json");
 
-// Koneksi database - hardcode sementara untuk test
-$conn = new mysqli(
+mysqli_report(MYSQLI_REPORT_OFF);
+
+$conn = new mysqli();
+$conn->ssl_set(NULL, NULL, NULL, NULL, NULL);
+$conn->real_connect(
     'shuttle.proxy.rlwy.net',
     'root',
     'loNOJCiUQGrPegvEOpNpVUKtVioRRwMn',
     'railway',
-    35889
+    35889,
+    NULL,
+    MYSQLI_CLIENT_SSL
 );
 
 if ($conn->connect_error) {
