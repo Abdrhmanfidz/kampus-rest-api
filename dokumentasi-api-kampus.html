@@ -507,22 +507,33 @@
 
   /* IDENTITY INLINE */
   .identity-inline {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 16px;
     font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-dim);
+    font-size: 12px;
     margin-bottom: 10px;
   }
 
   .identity-sep {
-    color: var(--accent2);
-    font-size: 16px;
+    color: var(--text-muted);
+    font-size: 14px;
   }
 
-  .identity-inline span:not(.identity-sep) {
-    color: var(--text);
+  .identity-inline .identity-label {
+    color: var(--text-muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+  }
+
+  .identity-inline span:not(.identity-sep):not(.identity-label) {
+    color: var(--accent);
     font-weight: 600;
   }
 
@@ -556,11 +567,14 @@
     <h1>Dokumentasi <span>API Kampus</span></h1>
     <p class="header-desc">// Tutorial lengkap penggunaan API menggunakan Postman</p>
     <div class="identity-inline">
+      <span class="identity-label">Nama</span>
       <span>Abdul Rahman Hafidz</span>
-      <span class="identity-sep">·</span>
-      <span>NIM: 47124020</span>
-      <span class="identity-sep">·</span>
-      <span>Kelas: 2A-TKJ</span>
+      <span class="identity-sep">|</span>
+      <span class="identity-label">NIM</span>
+      <span>47124020</span>
+      <span class="identity-sep">|</span>
+      <span class="identity-label">Kelas</span>
+      <span>2A-TKJ</span>
     </div>
 
     <div class="base-url-box">
