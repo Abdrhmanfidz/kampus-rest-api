@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dokumentasi API Kampus</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #00e5a0;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --blue: #60a5fa;
+    --orange: #fb923c;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .badge::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .header-desc {
+    color: var(--text-dim);
+    font-size: 16px;
+    max-width: 560px;
+    font-family: var(--mono);
+  }
+
+  .base-url-box {
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  .base-url-box .label {
+    color: var(--text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .base-url-box .url { color: var(--accent); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: sticky;
+    top: 24px;
+  }
+
+  .sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-left: 12px;
+  }
+
+  .nav-group { margin-bottom: 24px; }
+
+  .nav-group-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    padding: 4px 12px;
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    font-family: var(--mono);
+  }
+
+  .nav-item:hover, .nav-item.active {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .nav-item .method-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* MAIN CONTENT */
+  .main { min-width: 0; }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 48px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+
+  /* ENDPOINT CARD */
+  .endpoint-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .endpoint-card:hover { border-color: rgba(0,212,255,0.2); }
+
+  .endpoint-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .method-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    min-width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .GET    { background: rgba(0,229,160,0.12); color: var(--green); border: 1px solid rgba(0,229,160,0.25); }
+  .POST   { background: rgba(96,165,250,0.12); color: var(--blue); border: 1px solid rgba(96,165,250,0.25); }
+  .PUT    { background: rgba(251,191,36,0.12); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+  .DELETE { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+
+  .endpoint-url {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .endpoint-url .param { color: var(--accent); }
+
+  .endpoint-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-left: auto;
+    padding-right: 8px;
+  }
+
+  .chevron {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .endpoint-card.open .chevron { transform: rotate(180deg); }
+
+  .endpoint-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    background: var(--surface2);
+  }
+
+  .endpoint-card.open .endpoint-body { display: block; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+  }
+
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content { flex: 1; }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #060a14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-lang {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+  pre {
+    padding: 16px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+
+  .k { color: #c792ea; }   /* keyword */
+  .s { color: #c3e88d; }   /* string */
+  .n { color: var(--accent); } /* key */
+  .v { color: #f78c6c; }   /* value/number */
+  .c { color: #546e7a; font-style: italic; } /* comment */
+  .url-hl { color: var(--accent); }
+  .method-hl { color: var(--green); font-weight: 600; }
+
+  /* RESPONSE BOX */
+  .response-box {
+    margin-top: 14px;
+  }
+
+  .response-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .response-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* INFO BOX */
+  .info-box {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .info-box.info { background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.15); color: var(--accent); }
+  .info-box.warn { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.15); color: var(--yellow); }
+  .info-box.tip  { background: rgba(0,229,160,0.06); border: 1px solid rgba(0,229,160,0.15); color: var(--green); }
+
+  .info-box .icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .info-box .txt { color: var(--text-dim); }
+  .info-box .txt strong { color: var(--text); }
+
+  /* INTRO CARD */
+  .intro-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .intro-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+
+  .endpoint-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .endpoint-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 32px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { position: static; display: none; }
+    .endpoint-desc { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="badge">REST API</div>
+    <h1>Dokumentasi <span>API Kampus</span></h1>
+    <p class="header-desc">// Tutorial lengkap penggunaan API menggunakan Postman</p>
+    <div class="base-url-box">
+      <span class="label">Base URL</span>
+      <span class="url">https://kampus-rest-api-production.up.railway.app/api.php</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <p class="sidebar-title">Navigasi</p>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Pengantar</p>
+      <a class="nav-item" href="#intro">📋 Overview</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Mata Kuliah</p>
+      <a class="nav-item" href="#get-all"><span class="method-dot" style="background:var(--green)"></span>GET Semua</a>
+      <a class="nav-item" href="#get-id"><span class="method-dot" style="background:var(--green)"></span>GET by ID</a>
+      <a class="nav-item" href="#post"><span class="method-dot" style="background:var(--blue)"></span>POST Tambah</a>
+      <a class="nav-item" href="#put"><span class="method-dot" style="background:var(--yellow)"></span>PUT Update</a>
+      <a class="nav-item" href="#delete"><span class="method-dot" style="background:var(--red)"></span>DELETE Hapus</a>
+    </div>
+
+    <div class="nav-group">
+      <p class="nav-group-label">Lainnya</p>
+      <a class="nav-item" href="#mahasiswa"><span class="method-dot" style="background:var(--green)"></span>Mahasiswa</a>
+      <a class="nav-item" href="#dosen"><span class="method-dot" style="background:var(--green)"></span>Dosen</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- INTRO -->
+    <section class="section" id="intro">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(0,212,255,0.1)">📋</div>
+        <div>
+          <h2 class="section-title">Overview</h2>
+          <p class="section-subtitle">// Informasi umum API</p>
+        </div>
+      </div>
+
+      <div class="intro-card">
+        <h3>Daftar Endpoint Tersedia</h3>
+        <div class="endpoint-list">
+          <div class="endpoint-item"><span class="GET method-badge" style="font-size:10px;padding:2px 7px">GET</span>/api.php</div>
+          <div class="endpoint-item"><span class="GET method-badge" style="font-size:10px;padding:2px 7px">GET</span>?table=matkul</div>
+          <div class="endpoint-item"><span class="GET method-badge" style="font-size:10px;padding:2px 7px">GET</span>?table=matkul-detail</div>
+          <div class="endpoint-item"><span class="GET method-badge" style="font-size:10px;padding:2px 7px">GET</span>?table=mahasiswa</div>
+          <div class="endpoint-item"><span class="GET method-badge" style="font-size:10px;padding:2px 7px">GET</span>?table=dosen</div>
+          <div class="endpoint-item"><span class="POST method-badge" style="font-size:10px;padding:2px 7px">POST</span>?table=matkul</div>
+          <div class="endpoint-item"><span class="PUT method-badge" style="font-size:10px;padding:2px 7px">PUT</span>?table=matkul&id=1</div>
+          <div class="endpoint-item"><span class="DELETE method-badge" style="font-size:10px;padding:2px 7px">DEL</span>?table=matkul&id=1</div>
+        </div>
+      </div>
+
+      <div class="info-box info">
+        <span class="icon">💡</span>
+        <div class="txt"><strong>Format Response:</strong> Semua response API menggunakan format <strong>JSON</strong> dengan struktur <code>{"status": "success/error", "data": ...}</code></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- GET SEMUA -->
+    <section class="section" id="get-all">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(0,229,160,0.1)">📥</div>
+        <div>
+          <h2 class="section-title">GET — Lihat Semua Data</h2>
+          <p class="section-subtitle">// Mengambil seluruh data dari database</p>
+        </div>
+      </div>
+
+      <!-- GET All Matkul -->
+      <div class="endpoint-card open" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=matkul</span></span>
+          <span class="endpoint-desc">Semua mata kuliah</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <p class="step-title">Buka Postman, buat Request baru</p>
+                <p class="step-desc">Klik tombol <strong>+ New</strong> → pilih <strong>HTTP Request</strong></p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <p class="step-title">Set Method ke GET</p>
+                <p class="step-desc">Pastikan dropdown method di sebelah kiri URL sudah terpilih <strong>GET</strong></p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <p class="step-title">Masukkan URL berikut</p>
+                <div class="code-block">
+                  <div class="code-header">
+                    <span class="code-lang">URL</span>
+                    <button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=matkul')">Copy</button>
+                  </div>
+                  <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=matkul</pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <p class="step-title">Klik tombol <strong>Send</strong></p>
+                <p class="step-desc">Lihat response di bagian bawah Postman</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="response-box">
+            <p class="response-label">Contoh Response</p>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-lang">JSON</span>
+                <button class="copy-btn" onclick="copyCode(this, `{\n  'status': 'success',\n  'data': [\n    {\n      'id_matkul': 1,\n      'nama_matkul': 'Pemrograman Web',\n      'sks': 3,\n      'id_mahasiswa': 1,\n      'id_dosen': 1\n    }\n  ]\n}`)">Copy</button>
+              </div>
+              <pre>{
+  <span class="n">"status"</span>: <span class="s">"success"</span>,
+  <span class="n">"data"</span>: [
+    {
+      <span class="n">"id_matkul"</span>: <span class="v">1</span>,
+      <span class="n">"nama_matkul"</span>: <span class="s">"Pemrograman Web"</span>,
+      <span class="n">"sks"</span>: <span class="v">3</span>,
+      <span class="n">"id_mahasiswa"</span>: <span class="v">1</span>,
+      <span class="n">"id_dosen"</span>: <span class="v">1</span>
+    }
+  ]
+}</pre>
+            </div>
+          </div>
+
+          <div class="info-box tip">
+            <span class="icon">✅</span>
+            <div class="txt">Gunakan <strong>/api.php</strong> tanpa parameter untuk menampilkan <strong>semua tabel sekaligus</strong> (mahasiswa, dosen, dan mata kuliah).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GET Detail Matkul -->
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=matkul-detail</span></span>
+          <span class="endpoint-desc">Matkul + JOIN</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <p class="step-title">Masukkan URL berikut di Postman</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">URL</span>
+                    <button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=matkul-detail')">Copy</button>
+                  </div>
+                  <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=matkul-detail</pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <p class="step-title">Klik Send</p>
+                <p class="step-desc">Response akan menampilkan mata kuliah beserta nama mahasiswa dan nama dosen yang terkait.</p>
+              </div>
+            </div>
+          </div>
+          <div class="response-box">
+            <p class="response-label">Contoh Response</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JSON</span></div>
+              <pre>{
+  <span class="n">"status"</span>: <span class="s">"success"</span>,
+  <span class="n">"data"</span>: [
+    {
+      <span class="n">"id_matkul"</span>: <span class="v">1</span>,
+      <span class="n">"nama_matkul"</span>: <span class="s">"Pemrograman Web"</span>,
+      <span class="n">"sks"</span>: <span class="v">3</span>,
+      <span class="n">"nama_mahasiswa"</span>: <span class="s">"Budi Santoso"</span>,
+      <span class="n">"nama_dosen"</span>: <span class="s">"Dr. Hendra"</span>
+    }
+  ]
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- GET BY ID -->
+    <section class="section" id="get-id">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(0,229,160,0.1)">🔍</div>
+        <div>
+          <h2 class="section-title">GET — Lihat Data by ID</h2>
+          <p class="section-subtitle">// Mengambil satu data berdasarkan ID</p>
+        </div>
+      </div>
+
+      <div class="endpoint-card open" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=matkul&id=1</span></span>
+          <span class="endpoint-desc">Matkul by ID</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <p class="step-title">Masukkan URL dengan parameter id</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">URL</span>
+                    <button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=matkul&id=1')">Copy</button>
+                  </div>
+                  <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=matkul&id=1</pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <p class="step-title">Ganti angka <strong>1</strong> dengan ID yang ingin dicari</p>
+                <p class="step-desc">Contoh: <code>?table=matkul&id=2</code> untuk data dengan id_matkul = 2</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <p class="step-title">Klik Send</p>
+              </div>
+            </div>
+          </div>
+          <div class="response-box">
+            <p class="response-label">Contoh Response</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JSON</span></div>
+              <pre>{
+  <span class="n">"status"</span>: <span class="s">"success"</span>,
+  <span class="n">"data"</span>: {
+    <span class="n">"id_matkul"</span>: <span class="v">1</span>,
+    <span class="n">"nama_matkul"</span>: <span class="s">"Pemrograman Web"</span>,
+    <span class="n">"sks"</span>: <span class="v">3</span>,
+    <span class="n">"id_mahasiswa"</span>: <span class="v">1</span>,
+    <span class="n">"id_dosen"</span>: <span class="v">1</span>
+  }
+}</pre>
+            </div>
+          </div>
+          <div class="info-box warn">
+            <span class="icon">⚠️</span>
+            <div class="txt">Jika ID tidak ditemukan, response akan mengembalikan <strong>"Data tidak ditemukan"</strong> dengan status <strong>"error"</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- POST -->
+    <section class="section" id="post">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(96,165,250,0.1)">➕</div>
+        <div>
+          <h2 class="section-title">POST — Tambah Data</h2>
+          <p class="section-subtitle">// Menambahkan data baru ke database</p>
+        </div>
+      </div>
+
+      <div class="endpoint-card open" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge POST">POST</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=matkul</span></span>
+          <span class="endpoint-desc">Tambah mata kuliah</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <p class="step-title">Set Method ke POST dan masukkan URL</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">URL</span>
+                    <button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=matkul')">Copy</button>
+                  </div>
+                  <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=matkul</pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <p class="step-title">Klik tab <strong>Headers</strong> → tambahkan:</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">Headers</span></div>
+                  <pre><span class="n">Content-Type</span>  :  <span class="s">application/json</span></pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <p class="step-title">Klik tab <strong>Body</strong> → pilih <strong>raw</strong> → pilih <strong>JSON</strong></p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <p class="step-title">Masukkan data JSON berikut</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">JSON Body</span>
+                    <button class="copy-btn" onclick="copyCode(this, '{\n  \"nama_matkul\": \"Pemrograman Web\",\n  \"sks\": 3,\n  \"id_mahasiswa\": 1,\n  \"id_dosen\": 1\n}')">Copy</button>
+                  </div>
+                  <pre>{
+  <span class="n">"nama_matkul"</span>: <span class="s">"Pemrograman Web"</span>,
+  <span class="n">"sks"</span>: <span class="v">3</span>,
+  <span class="n">"id_mahasiswa"</span>: <span class="v">1</span>,
+  <span class="n">"id_dosen"</span>: <span class="v">1</span>
+}</pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <p class="step-title">Klik <strong>Send</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="response-box">
+            <p class="response-label">Contoh Response Berhasil</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JSON</span></div>
+              <pre>{
+  <span class="n">"status"</span>: <span class="s">"success"</span>,
+  <span class="n">"message"</span>: <span class="s">"Mata kuliah berhasil ditambahkan"</span>
+}</pre>
+            </div>
+          </div>
+          <div class="info-box info">
+            <span class="icon">💡</span>
+            <div class="txt"><strong>id_mahasiswa</strong> dan <strong>id_dosen</strong> harus menggunakan ID yang sudah ada di tabel mahasiswa dan dosen.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PUT -->
+    <section class="section" id="put">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(251,191,36,0.1)">✏️</div>
+        <div>
+          <h2 class="section-title">PUT — Update Data</h2>
+          <p class="section-subtitle">// Mengubah data yang sudah ada</p>
+        </div>
+      </div>
+
+      <div class="endpoint-card open" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge PUT">PUT</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=matkul&id=1</span></span>
+          <span class="endpoint-desc">Update mata kuliah</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <p class="step-title">Set Method ke PUT dan masukkan URL</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">URL</span>
+                    <button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=matkul&id=1')">Copy</button>
+                  </div>
+                  <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=matkul&id=1</pre>
+                </div>
+                <p class="step-desc" style="margin-top:8px">Ganti <strong>id=1</strong> dengan ID data yang ingin diupdate</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <p class="step-title">Tambahkan Header <strong>Content-Type: application/json</strong></p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <p class="step-title">Klik tab <strong>Body → raw → JSON</strong>, isi dengan data baru</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">JSON Body</span>
+                    <button class="copy-btn" onclick="copyCode(this, '{\n  \"nama_matkul\": \"Basis Data Lanjut\",\n  \"sks\": 4,\n  \"id_mahasiswa\": 2,\n  \"id_dosen\": 2\n}')">Copy</button>
+                  </div>
+                  <pre>{
+  <span class="n">"nama_matkul"</span>: <span class="s">"Basis Data Lanjut"</span>,
+  <span class="n">"sks"</span>: <span class="v">4</span>,
+  <span class="n">"id_mahasiswa"</span>: <span class="v">2</span>,
+  <span class="n">"id_dosen"</span>: <span class="v">2</span>
+}</pre>
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <p class="step-title">Klik <strong>Send</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="response-box">
+            <p class="response-label">Contoh Response Berhasil</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JSON</span></div>
+              <pre>{
+  <span class="n">"status"</span>: <span class="s">"success"</span>,
+  <span class="n">"message"</span>: <span class="s">"Mata kuliah berhasil diupdate"</span>
+}</pre>
+            </div>
+          </div>
+          <div class="info-box warn">
+            <span class="icon">⚠️</span>
+            <div class="txt">Semua field harus diisi saat PUT. Jika ada field yang kosong, data tersebut akan diupdate menjadi kosong.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- DELETE -->
+    <section class="section" id="delete">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(248,113,113,0.1)">🗑️</div>
+        <div>
+          <h2 class="section-title">DELETE — Hapus Data</h2>
+          <p class="section-subtitle">// Menghapus data dari database</p>
+        </div>
+      </div>
+
+      <div class="endpoint-card open" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge DELETE">DELETE</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=matkul&id=1</span></span>
+          <span class="endpoint-desc">Hapus mata kuliah</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <p class="step-title">Set Method ke DELETE dan masukkan URL</p>
+                <div class="code-block">
+                  <div class="code-header"><span class="code-lang">URL</span>
+                    <button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=matkul&id=1')">Copy</button>
+                  </div>
+                  <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=matkul&id=1</pre>
+                </div>
+                <p class="step-desc" style="margin-top:8px">Ganti <strong>id=1</strong> dengan ID data yang ingin dihapus</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <p class="step-title">Klik <strong>Send</strong> — tidak perlu Body</p>
+                <p class="step-desc">DELETE tidak memerlukan Body JSON, cukup URL saja.</p>
+              </div>
+            </div>
+          </div>
+          <div class="response-box">
+            <p class="response-label">Contoh Response Berhasil</p>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JSON</span></div>
+              <pre>{
+  <span class="n">"status"</span>: <span class="s">"success"</span>,
+  <span class="n">"message"</span>: <span class="s">"Mata kuliah berhasil dihapus"</span>
+}</pre>
+            </div>
+          </div>
+          <div class="info-box warn">
+            <span class="icon">⚠️</span>
+            <div class="txt"><strong>Hati-hati!</strong> Data yang sudah dihapus tidak bisa dikembalikan. Pastikan ID yang dimasukkan sudah benar sebelum klik Send.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- MAHASISWA -->
+    <section class="section" id="mahasiswa">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(124,58,237,0.1)">👨‍🎓</div>
+        <div>
+          <h2 class="section-title">Endpoint Mahasiswa</h2>
+          <p class="section-subtitle">// CRUD data mahasiswa</p>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=mahasiswa</span></span>
+          <span class="endpoint-desc">Semua mahasiswa</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">URL</span><button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=mahasiswa')">Copy</button></div>
+            <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=mahasiswa</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=mahasiswa&id=1</span></span>
+          <span class="endpoint-desc">Mahasiswa by ID</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">URL</span><button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=mahasiswa&id=1')">Copy</button></div>
+            <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=mahasiswa&id=1</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge POST">POST</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=mahasiswa</span></span>
+          <span class="endpoint-desc">Tambah mahasiswa</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">JSON Body</span><button class="copy-btn" onclick="copyCode(this, '{\n  \"nama\": \"Budi Santoso\"\n}')">Copy</button></div>
+            <pre>{
+  <span class="n">"nama"</span>: <span class="s">"Budi Santoso"</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge PUT">PUT</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=mahasiswa&id=1</span></span>
+          <span class="endpoint-desc">Update mahasiswa</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">JSON Body</span><button class="copy-btn" onclick="copyCode(this, '{\n  \"nama\": \"Budi Santoso Baru\"\n}')">Copy</button></div>
+            <pre>{
+  <span class="n">"nama"</span>: <span class="s">"Budi Santoso Baru"</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge DELETE">DELETE</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=mahasiswa&id=1</span></span>
+          <span class="endpoint-desc">Hapus mahasiswa</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">URL</span><button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=mahasiswa&id=1')">Copy</button></div>
+            <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=mahasiswa&id=1</pre>
+          </div>
+          <div class="info-box warn" style="margin-top:12px">
+            <span class="icon">⚠️</span>
+            <div class="txt">Tidak bisa menghapus mahasiswa yang masih terhubung dengan data mata kuliah.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- DOSEN -->
+    <section class="section" id="dosen">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(251,191,36,0.1)">👨‍🏫</div>
+        <div>
+          <h2 class="section-title">Endpoint Dosen</h2>
+          <p class="section-subtitle">// CRUD data dosen</p>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=dosen</span></span>
+          <span class="endpoint-desc">Semua dosen</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">URL</span><button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=dosen')">Copy</button></div>
+            <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=dosen</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge GET">GET</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=dosen&id=1</span></span>
+          <span class="endpoint-desc">Dosen by ID</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">URL</span><button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=dosen&id=1')">Copy</button></div>
+            <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=dosen&id=1</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge POST">POST</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=dosen</span></span>
+          <span class="endpoint-desc">Tambah dosen</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">JSON Body</span><button class="copy-btn" onclick="copyCode(this, '{\n  \"nama_dosen\": \"Dr. Hendra\"\n}')">Copy</button></div>
+            <pre>{
+  <span class="n">"nama_dosen"</span>: <span class="s">"Dr. Hendra"</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge PUT">PUT</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=dosen&id=1</span></span>
+          <span class="endpoint-desc">Update dosen</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">JSON Body</span><button class="copy-btn" onclick="copyCode(this, '{\n  \"nama_dosen\": \"Prof. Hendra\"\n}')">Copy</button></div>
+            <pre>{
+  <span class="n">"nama_dosen"</span>: <span class="s">"Prof. Hendra"</span>
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="endpoint-card" onclick="toggleCard(this)">
+        <div class="endpoint-header">
+          <span class="method-badge DELETE">DELETE</span>
+          <span class="endpoint-url">/api.php<span class="param">?table=dosen&id=1</span></span>
+          <span class="endpoint-desc">Hapus dosen</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-block">
+            <div class="code-header"><span class="code-lang">URL</span><button class="copy-btn" onclick="copyCode(this, 'https://kampus-rest-api-production.up.railway.app/api.php?table=dosen&id=1')">Copy</button></div>
+            <pre>https://kampus-rest-api-production.up.railway.app/api.php?table=dosen&id=1</pre>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  Dokumentasi API Kampus &nbsp;·&nbsp; REST API &nbsp;·&nbsp; Railway.app
+</footer>
+
+<script>
+  function toggleCard(card) {
+    // jangan toggle kalau klik copy button
+    if (event.target.classList.contains('copy-btn')) return;
+    card.classList.toggle('open');
+  }
+
+  function copyCode(btn, text) {
+    event.stopPropagation();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
