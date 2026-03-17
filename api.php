@@ -28,16 +28,7 @@ switch($table){
             case 'GET':
                 if(isset($_GET['id'])){
                     $id = $_GET['id'];
-                    $stmt = $conn->prepare("SELECT 
-                        mata_kuliah.id_matkul,
-                        mata_kuliah.nama_matkul,
-                        mata_kuliah.sks,
-                        mahasiswa.nama AS nama_mahasiswa,
-                        dosen.nama_dosen
-                    FROM mata_kuliah
-                    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
-                    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen
-                    WHERE mata_kuliah.id_matkul = ?");
+                    $stmt = $conn->prepare("SELECT * FROM mata_kuliah WHERE id_matkul = ?");
                     $stmt->bind_param("i", $id);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -48,15 +39,7 @@ switch($table){
                         echo json_encode(["status" => "error", "message" => "Data tidak ditemukan"]);
                     }
                 } else {
-                    $result = $conn->query("SELECT 
-                        mata_kuliah.id_matkul,
-                        mata_kuliah.nama_matkul,
-                        mata_kuliah.sks,
-                        mahasiswa.nama AS nama_mahasiswa,
-                        dosen.nama_dosen
-                    FROM mata_kuliah
-                    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
-                    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen");
+                    $result = $conn->query("SELECT * FROM mata_kuliah");
                     $data = [];
                     while($row = $result->fetch_assoc()){
                         $data[] = $row;
@@ -228,7 +211,7 @@ switch($table){
     default:
         echo json_encode([
             "status"  => "error",
-            "message" => "Table tidak ditemukan. Gunakan ?table=matkul, ?table=mahasiswa, atau ?table=dosen"
+            "message" => "Gunakan ?table=matkul, ?table=mahasiswa, atau ?table=dosen"
         ]);
         break;
 }
