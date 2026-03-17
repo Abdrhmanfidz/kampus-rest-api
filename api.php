@@ -84,6 +84,55 @@ switch($table){
         }
         break;
 
+    // ==================== MATA KULIAH + JOIN ====================
+    case 'matkul-detail':
+        switch($method){
+            case 'GET':
+                if(isset($_GET['id'])){
+                    $id = $_GET['id'];
+                    $stmt = $conn->prepare("SELECT 
+                        mata_kuliah.id_matkul,
+                        mata_kuliah.nama_matkul,
+                        mata_kuliah.sks,
+                        mahasiswa.nama AS nama_mahasiswa,
+                        dosen.nama_dosen
+                    FROM mata_kuliah
+                    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
+                    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen
+                    WHERE mata_kuliah.id_matkul = ?");
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $data = $result->fetch_assoc();
+                    if($data){
+                        echo json_encode(["status" => "success", "data" => $data]);
+                    } else {
+                        echo json_encode(["status" => "error", "message" => "Data tidak ditemukan"]);
+                    }
+                } else {
+                    $result = $conn->query("SELECT 
+                        mata_kuliah.id_matkul,
+                        mata_kuliah.nama_matkul,
+                        mata_kuliah.sks,
+                        mahasiswa.nama AS nama_mahasiswa,
+                        dosen.nama_dosen
+                    FROM mata_kuliah
+                    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
+                    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen");
+                    $data = [];
+                    while($row = $result->fetch_assoc()){
+                        $data[] = $row;
+                    }
+                    echo json_encode(["status" => "success", "data" => $data]);
+                }
+                break;
+
+            default:
+                echo json_encode(["status" => "error", "message" => "Method tidak diizinkan"]);
+                break;
+        }
+        break;
+
     // ==================== MAHASISWA ====================
     case 'mahasiswa':
         switch($method){
@@ -211,59 +260,10 @@ switch($table){
     default:
         echo json_encode([
             "status"  => "error",
-            "message" => "Gunakan ?table=matkul, ?table=mahasiswa, atau ?table=dosen"
+            "message" => "Gunakan ?table=matkul, ?table=matkul-detail, ?table=mahasiswa, atau ?table=dosen"
         ]);
         break;
 }
-
-// ==================== MATA KULIAH + JOIN ====================
-    case 'matkul-detail':
-        switch($method){
-            case 'GET':
-                if(isset($_GET['id'])){
-                    $id = $_GET['id'];
-                    $stmt = $conn->prepare("SELECT 
-                        mata_kuliah.id_matkul,
-                        mata_kuliah.nama_matkul,
-                        mata_kuliah.sks,
-                        mahasiswa.nama AS nama_mahasiswa,
-                        dosen.nama_dosen
-                    FROM mata_kuliah
-                    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
-                    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen
-                    WHERE mata_kuliah.id_matkul = ?");
-                    $stmt->bind_param("i", $id);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $data = $result->fetch_assoc();
-                    if($data){
-                        echo json_encode(["status" => "success", "data" => $data]);
-                    } else {
-                        echo json_encode(["status" => "error", "message" => "Data tidak ditemukan"]);
-                    }
-                } else {
-                    $result = $conn->query("SELECT 
-                        mata_kuliah.id_matkul,
-                        mata_kuliah.nama_matkul,
-                        mata_kuliah.sks,
-                        mahasiswa.nama AS nama_mahasiswa,
-                        dosen.nama_dosen
-                    FROM mata_kuliah
-                    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
-                    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen");
-                    $data = [];
-                    while($row = $result->fetch_assoc()){
-                        $data[] = $row;
-                    }
-                    echo json_encode(["status" => "success", "data" => $data]);
-                }
-                break;
-
-            default:
-                echo json_encode(["status" => "error", "message" => "Method tidak diizinkan"]);
-                break;
-        }
-        break;
 
 $conn->close();
 ?>
