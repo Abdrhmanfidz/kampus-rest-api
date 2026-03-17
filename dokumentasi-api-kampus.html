@@ -505,46 +505,25 @@
     margin: 14px 0;
   }
 
-  /* IDENTITY CARD */
-  .identity-card {
-    display: inline-flex;
-    align-items: center;
-    gap: 0;
-    background: var(--surface2);
-    border: 1px solid rgba(124,58,237,0.3);
-    border-radius: 10px;
-    margin-top: 12px;
-    overflow: hidden;
-  }
-
-  .identity-item {
+  /* IDENTITY INLINE */
+  .identity-inline {
     display: flex;
-    flex-direction: column;
-    padding: 8px 16px;
-    gap: 2px;
-  }
-
-  .identity-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-  }
-
-  .identity-value {
+    align-items: center;
+    gap: 10px;
     font-family: var(--mono);
     font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
+    color: var(--text-dim);
+    margin-bottom: 10px;
   }
 
-  .identity-divider {
-    width: 1px;
-    height: 36px;
-    background: rgba(124,58,237,0.3);
-    flex-shrink: 0;
+  .identity-sep {
+    color: var(--accent2);
+    font-size: 16px;
+  }
+
+  .identity-inline span:not(.identity-sep) {
+    color: var(--text);
+    font-weight: 600;
   }
 
   /* FOOTER */
@@ -576,28 +555,18 @@
     <div class="badge">REST API</div>
     <h1>Dokumentasi <span>API Kampus</span></h1>
     <p class="header-desc">// Tutorial lengkap penggunaan API menggunakan Postman</p>
+    <div class="identity-inline">
+      <span>Abdul Rahman Hafidz</span>
+      <span class="identity-sep">·</span>
+      <span>NIM: 47124020</span>
+      <span class="identity-sep">·</span>
+      <span>Kelas: 2A-TKJ</span>
+    </div>
+
     <div class="base-url-box">
       <span class="label">Base URL</span>
       <span class="url">https://kampus-rest-api-production.up.railway.app/api.php</span>
     </div>
-
-    <div class="identity-card">
-      <div class="identity-item">
-        <span class="identity-label">Nama</span>
-        <span class="identity-value">Abdul Rahman Hafidz</span>
-      </div>
-      <div class="identity-divider"></div>
-      <div class="identity-item">
-        <span class="identity-label">NIM</span>
-        <span class="identity-value">47124020</span>
-      </div>
-      <div class="identity-divider"></div>
-      <div class="identity-item">
-        <span class="identity-label">Kelas</span>
-        <span class="identity-value">2A-TKJ</span>
-      </div>
-    </div>
-
   </div>
 </header>
 
