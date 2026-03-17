@@ -20,7 +20,55 @@ if ($conn->connect_errno) {
 $method = $_SERVER['REQUEST_METHOD'];
 $table  = $_GET['table'] ?? '';
 
+// ==================== FUNGSI TAMPIL SEMUA ====================
+function tampilSemua($conn){
+    $mahasiswa = $conn->query("SELECT * FROM mahasiswa");
+    $data_mahasiswa = [];
+    while($row = $mahasiswa->fetch_assoc()){
+        $data_mahasiswa[] = $row;
+    }
+
+    $dosen = $conn->query("SELECT * FROM dosen");
+    $data_dosen = [];
+    while($row = $dosen->fetch_assoc()){
+        $data_dosen[] = $row;
+    }
+
+    $matkul = $conn->query("SELECT 
+        mata_kuliah.id_matkul,
+        mata_kuliah.nama_matkul,
+        mata_kuliah.sks,
+        mahasiswa.nama AS nama_mahasiswa,
+        dosen.nama_dosen
+    FROM mata_kuliah
+    JOIN mahasiswa ON mata_kuliah.id_mahasiswa = mahasiswa.id_mahasiswa
+    JOIN dosen ON mata_kuliah.id_dosen = dosen.id_dosen");
+    $data_matkul = [];
+    while($row = $matkul->fetch_assoc()){
+        $data_matkul[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => [
+            "mahasiswa"   => $data_mahasiswa,
+            "dosen"       => $data_dosen,
+            "mata_kuliah" => $data_matkul
+        ]
+    ]);
+}
+
 switch($table){
+
+    // ==================== KOSONG = TAMPIL SEMUA ====================
+    case '':
+        tampilSemua($conn);
+        break;
+
+    // ==================== ALL ====================
+    case 'all':
+        tampilSemua($conn);
+        break;
 
     // ==================== MATA KULIAH ====================
     case 'matkul':
